@@ -2,29 +2,59 @@
 - name: "Das habe ich von meinem Hauslehrer gelernt"
   tags:
 	- general
+	- German
 
 - name: "Schwert des Königs/der Königin"
   tags: 
 	- medieval
 	- fantasy
+	- German
 
 
 - name: "Die Rechnung geht auf mich!"
   tag:
 	- dilemma
 	- general
+	- German
 
 - name: "Herz aus Gold, Klinge/Waffe aus Stahl"
   tag: 
 	- general
+	- German
 
-
-- name: "Things that happen"
-  tags:
-	- general
 
 - name: "Friesicher Luftpirat"
   tags:
 	- steampunk
 	- concept
 	- eis&dampf
+	- German
+
+
+- name: "God, I hate computers"
+  tags:
+	- scifi
+	- cyberpunk
+	- urban
+	- English
+
+
+- name: "Pocket knife of programming"
+  tags:
+	- cyberpunk
+	- urban
+	- scifi
+	- English
+
+- name: "Iron Maiden"
+  tags:
+	- general
+	- English
+
+- name: "Heilerin mit beunruhigender Begeisterung für Gifte"
+  tags:
+	- fantasy
+	- medieval
+	- German
+	- concept
+	- German
