@@ -55,6 +55,15 @@
   tags:
 	- fantasy
 	- medieval
-	- German
 	- concept
 	- German
+
+
+- name: "Mit dem Silberlöffel im Mund geboren"
+	- general
+	- German
+
+
+- name: "Everything has a prize"
+	- general
+	- English
