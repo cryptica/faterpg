@@ -1,39 +1,40 @@
 # Eugen Oswald Leopold von Jylich-Kleve-Berg
 
---- # ID
+# ID
 
-system: "Eis & Dampf"
+system: Eis & Dampf
 name: Eugen Oswald Leopold von Jylich-Kleve-Berg
 # description is optional
 description: Adeliger Lebemann
 refresh rate: 3
 
---- # ASPECTS
+# ASPECTS
 
 aspects:
 - { type: High Concept
   , name: Die Nummer 24 der kaiserlichen Thronfolge zieht ins Abenteuer
-  , description: >-
-        Eugen war stets ein wenig gelangweilt von der Welt, die ihn umgab.
+  , description:
+        "Eugen war stets ein wenig gelangweilt von der Welt, die ihn umgab.
         Es war kein Wunder, dass er die erstbeste Gelegenheit ergriff,
-        sich Hals über Kopf in absurde Fährnisse zu stürzen!
+        sich Hals über Kopf in absurde Fährnisse zu stürzen!"
   }
 - { type: Trouble
   , name: Die Rechnung geht auf mich!
-  ,description: >-
-        Der adlige Lebemann weiß, dass er auf diversen Banken üppige
+  ,description:
+        "Der adlige Lebemann weiß, dass er auf diversen Banken üppige
         Geldanlagen hinterlegt hat doch einen wirklichen Überblick darüber
         hat er nicht. Er vertraut einfach darauf, dass ihm die Ressourcen
         nicht ausgehen – und so lange darf es gern das Teuerste sein.
         Freunde wie Gegenspieler sind selbstverständlich eingeladen, egal,
         wie viel lichtscheues Gesindel man damit anlockt – man muss
-        schließlich zeigen, was man hat!
+        schließlich zeigen, was man hat!"
   }
 - { name: Das habe ich von meinem Hauslehrer gelernt! }
 - { name: Eine Klinge aus Stahl, ein Herz aus Gold }
 - { name: Die gehören zu mir }
 
---- # SKILLS
+# SKILLS
+
 skills:
 - +5:
 - +4:
@@ -51,14 +52,14 @@ skills:
     - Wille
     - Wissen
 
+# EXTRAS        # list of any data type
 
---- # EXTRAS        # list of any data type
 extras:
-- { name: Spazierstock,
+- { name: Spazierstock
   , description: "Waffe:1 (für den Alltag)"
   }
 - { name: Ein Paar Duellpistolen
-  , description: Waffe:2
+  , description: "Waffe:2"
   }
 - { name: Verziertes Rapier
   , description: "Waffe:3 (ebenfalls für Duelle)"
@@ -67,7 +68,8 @@ extras:
   , description: Sturmschwalbe
   }
 
---- # STUNTS        # name, description
+# STUNTS        # name, description
+
 stunts:
 - { name: Adel verpflichtet
   , description: "Gibt einen +2 Bonus auf Kontakte, wenn man die Hilfe eines anderen Adligen erbittet."
