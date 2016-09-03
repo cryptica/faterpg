@@ -28,5 +28,7 @@ executable faterpg
   build-depends:       base >=4.9 && <4.10
                      , yaml
                      , bytestring
+                     , unordered-containers
+                     , text
   hs-source-dirs:      src
   default-language:    Haskell2010
