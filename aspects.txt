@@ -1,0 +1,19 @@
+
+- name: "Das habe ich von meinem Hauslehrer gelernt"
+  tags:
+	- general
+
+- name: "Schwert des Königs/der Königin"
+  tags: 
+	- medieval
+	- fantasy
+
+
+- name: "Die Rechnung geht auf mich!"
+  tag:
+	- dilemma
+	- general
+
+- name: "Herz aus Gold, Klinge/Waffe aus Stahl"
+  tag: 
+	- general
