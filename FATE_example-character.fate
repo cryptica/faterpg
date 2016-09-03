@@ -1,0 +1,59 @@
+
+
+--- # ID
+
+ID:
+	- name: Eugen Oswald Leopold von Jylich-Kleve-Berg 
+	- description: # may be left empty
+
+--- # ASPECTS
+ASPECTS:
+-high concept:
+	- name: Die Nummer 24 der kaiserlichen Thronfolge zieht ins Abenteuer
+	- description: Eugen war stets ein wenig gelangweilt von der Welt, die ihn umgab. Es war kein Wunder, dass er die erstbeste Gelegenheit ergriff, sich Hals über Kopf in absurde Fährnisse zu stürzen!
+
+-trouble:
+	- name: Die Rechnung geht auf mich!
+	- description: Der adlige Lebemann weiß, dass er auf diversen Banken üppige Geldanlagen hinterlegt hat doch einen wirklichen Überblick darüber hat er nicht. Er vertraut einfach darauf, dass ihm die Ressourcen nicht ausgehen – und so lange darf es gern das Teuerste sein. Freunde wie Gegenspieler sind selbstverständlich eingeladen, egal, wie viel lichtscheues Gesindel man damit anlockt – man muss schließlich zeigen, was man hat!
+
+-aspect I: 
+	name: Das habe ich von meinem Hauslehrer gelernt!
+-aspect II: 
+	name: Eine Klinge aus Stahl, ein Herz aus Gold
+-aspect III: 
+	name: Die gehören zu mir
+
+--- # SKILLS
+SKILLS:
+- +5:		# list
+- +4:
+	- Ressourcen
+- +3:
+	- Kommandieren
+	- Provozieren
+- +2:
+	- Kämpfen
+	- Charisma
+	- Kontakte
+- +1:
+	- Aeronautik
+	- Schießen
+	- Wille
+	- Wissen
+
+
+--- # EXTRAS		# list of any data type
+EXTRAS:
+- {name: spazierstock, description: Waffe:1 (für den Alltag)}
+- {name: Ein Paar Duellpistolen, description: Waffe:2}
+- {name: Verziertes Rapier, description: Waffe:3 (ebenfalls für Duelle)}
+- {name: Luftschiff, description: Sturmschwalbe}
+
+
+--- # STUNTS		# name, description
+STUNTS:
+- {name: Adel verplfichtet, effect: Gibt einen +2 Bonus auf Kontakte, wenn man die Hilfe eines anderen Adligen erbittet.}
+- {name: La Canne, effect: Beim Kampf mit dem Spazierstock erhält der Kombattant einen +2 Bonus.}
+- {name: Was glaubt er eigentlich, wer ich bin?, effect: Liefert einen Bonus von +2 auf Provozieren, wenn der eigene gesellschaftliche Stand höher ist als der des Gegenübers.}
+
+
