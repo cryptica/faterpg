@@ -9,9 +9,6 @@ import           Control.Monad               (when)
 import           Data.Maybe                  (fromMaybe)
 import           System.Exit                 (exitWith, ExitCode(..) )
 
---import GHC.Generics
---import Data.Aeson
-
 data Aspect = Aspect { aspecttype :: Maybe String, aspectname :: String, aspectdescription :: Maybe String } deriving (Show)
 
 data Skill = Skill { skilllevel :: Int, skillname :: String } deriving (Show)
@@ -28,8 +25,8 @@ data FateChar =
             , charrefreshrate :: Int
             , charaspects :: [Aspect]
 --            , charskills :: [Skill]
---            , charextras :: [Extra]
---            , charstunts :: [Stunt]
+            , charextras :: [Extra]
+            , charstunts :: [Stunt]
         } deriving (Show)
 
 instance Y.FromJSON Aspect where
@@ -57,7 +54,9 @@ instance Y.FromJSON FateChar where
         m Y..:  "name" <*>
         m Y..:? "description" <*>
         m Y..:  "refresh rate" <*>
-        m Y..:  "aspects"
+        m Y..:  "aspects" <*>
+        m Y..:  "extras" <*>
+        m Y..:  "stunts"
     parseJSON x = fail ("not an object: " ++ show x)
 
 main :: IO ()
