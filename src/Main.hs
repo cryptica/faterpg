@@ -31,18 +31,6 @@ data Extra = Extra { extraname :: String, extradescription :: Maybe String } der
 
 data Stunt = Stunt { stuntname :: String, stuntdescription :: Maybe String } deriving (Show,Generic)
 
-data YAMLFateChar =
-        YAMLFateChar {
-              yamlsystem :: Maybe String
-            , yamlname :: String
-            , yamldescription :: Maybe String
-            , yamlrefreshrate :: Int
-            , yamlaspects :: [Aspect]
-            , yamlskillgroups :: [SkillGroup]
-            , yamlextras :: [Extra]
-            , yamlstunts :: [Stunt]
-        } deriving (Show,Generic)
-
 data FateChar =
         FateChar {
               charsystem :: Maybe String
@@ -50,7 +38,7 @@ data FateChar =
             , chardescription :: Maybe String
             , charrefreshrate :: Int
             , charaspects :: [Aspect]
-            , charskills :: [Skill]
+            , charskillgroups :: [SkillGroup]
             , charextras :: [Extra]
             , charstunts :: [Stunt]
         } deriving (Show,Generic)
@@ -101,8 +89,8 @@ instance Y.FromJSON Stunt where
         m Y..:? "description"
     parseJSON x = fail ("not an object: " ++ show x)
 
-instance Y.FromJSON YAMLFateChar where
-    parseJSON (Y.Object m) = YAMLFateChar <$>
+instance Y.FromJSON FateChar where
+    parseJSON (Y.Object m) = FateChar <$>
         m Y..:? "system" <*>
         m Y..:  "name" <*>
         m Y..:? "description" <*>
@@ -134,7 +122,7 @@ instance Y.ToJSON Stunt where
     toJSON     = AT.genericToJSON encodingOptions
     toEncoding = AT.genericToEncoding encodingOptions
 
-instance Y.ToJSON YAMLFateChar where
+instance Y.ToJSON FateChar where
     toJSON     = AT.genericToJSON encodingOptions
     toEncoding = AT.genericToEncoding encodingOptions
 
@@ -151,37 +139,23 @@ encodingOptions = AT.defaultOptions
           fieldLabelMod ('y':'a':'m':'l':s) = s
           fieldLabelMod s = s
 
-yamlCharToFateChar :: YAMLFateChar -> FateChar
-yamlCharToFateChar char =
-        let skills = concatMap skillGroupToSkills $ yamlskillgroups char
+normalizeSkillGroups :: FateChar -> FateChar
+normalizeSkillGroups char =
+        let skills = concatMap skillGroupToSkills $ charskillgroups char
+            skillgroups = skillsToSkillGroups $ skills
         in  FateChar {
-              charsystem = yamlsystem char
-            , charname = yamlname char
-            , chardescription = yamldescription char
-            , charrefreshrate = yamlrefreshrate char
-            , charaspects = yamlaspects char
-            , charskills = skills
-            , charextras = yamlextras char
-            , charstunts = yamlstunts char
+              charsystem = charsystem char
+            , charname = charname char
+            , chardescription = chardescription char
+            , charrefreshrate = charrefreshrate char
+            , charaspects = charaspects char
+            , charskillgroups = skillgroups
+            , charextras = charextras char
+            , charstunts = charstunts char
         }
     where
         skillGroupToSkills group =
             map (\s -> Skill { skillname = s, skilllevel = skillgrouplevel group}) $ skillgroupskills group
-
-fateCharToYamlChar :: FateChar -> YAMLFateChar
-fateCharToYamlChar char =
-        let skillgroups = skillsToSkillGroups $ charskills char
-        in  YAMLFateChar {
-              yamlsystem = charsystem char
-            , yamlname = charname char
-            , yamldescription = chardescription char
-            , yamlrefreshrate = charrefreshrate char
-            , yamlaspects = charaspects char
-            , yamlskillgroups = skillgroups
-            , yamlextras = charextras char
-            , yamlstunts = charstunts char
-        }
-    where
         skillsToSkillGroups skills =
             let skillsSorted = sortBy (comparing (Down . skilllevel)) skills
                 skillsGrouped = groupBy ((==) `on` skilllevel) skillsSorted
@@ -193,11 +167,9 @@ main = do
     when (length args < 1) $ putStrLn "Error: no input file given" >> exitWith (ExitFailure 1)
     let filename = head args
     content <- BS.readFile filename
-    case Y.decodeEither content :: Either String YAMLFateChar of
+    case Y.decodeEither content :: Either String FateChar of
         Left err -> putStrLn ("Error parsing the character: " ++ err) >> exitWith (ExitFailure 1)
-        Right parsedContent -> do
-            let fateChar = yamlCharToFateChar parsedContent
-            let yamlChar = fateCharToYamlChar fateChar
-            print yamlChar
-            let content = Y.encode yamlChar
+        Right parsedChar -> do
+            let fateChar = normalizeSkillGroups parsedChar
+            let content = Y.encode fateChar
             BS.putStrLn content
