@@ -1,2 +1,4 @@
 # cabal build folder
 dist/
+# binary
+faterpg
