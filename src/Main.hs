@@ -1,26 +1,47 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TupleSections #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Main where
 
+import           GHC.Generics
 import           System.Environment          (getArgs)
+import qualified Data.Text             as T
 import qualified Data.Text.Read        as TR
 import qualified Data.Yaml             as Y
 import qualified Data.Yaml.Parser      as YP
+import qualified Data.Aeson.Types      as AT
 import qualified Data.ByteString.Char8 as BS
 import qualified Data.HashMap.Strict   as HM
+import           Data.Function               (on)
+import           Data.Ord                    (comparing, Down(..))
+import           Data.List                   (sortBy, groupBy)
+import           Control.Monad               (when)
 import           Control.Monad               (when)
 import           Data.Maybe                  (fromMaybe)
 import           System.Exit                 (exitWith, ExitCode(..) )
 
-data Aspect = Aspect { aspecttype :: Maybe String, aspectname :: String, aspectdescription :: Maybe String } deriving (Show)
+data Aspect = Aspect { aspecttype :: Maybe String, aspectname :: String, aspectdescription :: Maybe String } deriving (Show,Generic)
 
-data Skill = Skill { skilllevel :: Int, skillname :: String } deriving (Show)
+data Skill = Skill { skillname :: String, skilllevel :: Int } deriving (Show,Generic)
 
-data SkillGroup = SkillGroup { skillgrouplevel :: Int, skillgroupskills :: [String] } deriving (Show)
+data SkillGroup = SkillGroup { skillgrouplevel :: Int, skillgroupskills :: [String] } deriving (Show,Generic)
 
-data Extra = Extra { extraname :: String, extradescription :: Maybe String } deriving (Show)
+data Extra = Extra { extraname :: String, extradescription :: Maybe String } deriving (Show,Generic)
 
-data Stunt = Stunt { stuntname :: String, stuntdescription :: Maybe String } deriving (Show)
+data Stunt = Stunt { stuntname :: String, stuntdescription :: Maybe String } deriving (Show,Generic)
+
+data YAMLFateChar =
+        YAMLFateChar {
+              yamlsystem :: Maybe String
+            , yamlname :: String
+            , yamldescription :: Maybe String
+            , yamlrefreshrate :: Int
+            , yamlaspects :: [Aspect]
+            , yamlskillgroups :: [SkillGroup]
+            , yamlextras :: [Extra]
+            , yamlstunts :: [Stunt]
+        } deriving (Show,Generic)
 
 data FateChar =
         FateChar {
@@ -29,12 +50,17 @@ data FateChar =
             , chardescription :: Maybe String
             , charrefreshrate :: Int
             , charaspects :: [Aspect]
-            , charskillgroups :: [SkillGroup]
+            , charskills :: [Skill]
             , charextras :: [Extra]
             , charstunts :: [Stunt]
-        } deriving (Show)
+        } deriving (Show,Generic)
 
 instance Y.FromJSON Aspect where
+    parseJSON (Y.String s) = return $ Aspect
+        { aspecttype = Nothing
+        , aspectname = T.unpack s
+        , aspectdescription = Nothing
+        }
     parseJSON (Y.Object m) = Aspect <$>
         m Y..:? "type" <*>
         m Y..:  "name" <*>
@@ -49,24 +75,34 @@ instance Y.FromJSON SkillGroup where
             case TR.signed TR.decimal lt of
                 Left err -> fail err
                 Right (level, _) -> do
-                    skills <- Y.parseJSON st
+                    skills <- case st of
+                        Y.Array _ -> Y.parseJSON st
+                        _ -> (:[]) <$> (Y.parseJSON st)
                     return $ SkillGroup level skills
     parseJSON x = fail ("not an object: " ++ show x)
 
 instance Y.FromJSON Extra where
+    parseJSON (Y.String s) = return $ Extra
+        { extraname = T.unpack s
+        , extradescription = Nothing
+        }
     parseJSON (Y.Object m) = Extra <$>
         m Y..:  "name" <*>
         m Y..:? "description"
     parseJSON x = fail ("not an object: " ++ show x)
 
 instance Y.FromJSON Stunt where
+    parseJSON (Y.String s) = return $ Stunt
+        { stuntname = T.unpack s
+        , stuntdescription = Nothing
+        }
     parseJSON (Y.Object m) = Stunt <$>
         m Y..:  "name" <*>
         m Y..:? "description"
     parseJSON x = fail ("not an object: " ++ show x)
 
-instance Y.FromJSON FateChar where
-    parseJSON (Y.Object m) = FateChar <$>
+instance Y.FromJSON YAMLFateChar where
+    parseJSON (Y.Object m) = YAMLFateChar <$>
         m Y..:? "system" <*>
         m Y..:  "name" <*>
         m Y..:? "description" <*>
@@ -77,13 +113,91 @@ instance Y.FromJSON FateChar where
         m Y..:  "stunts"
     parseJSON x = fail ("not an object: " ++ show x)
 
+instance Y.ToJSON Aspect where
+    toJSON     = AT.genericToJSON encodingOptions
+    toEncoding = AT.genericToEncoding encodingOptions
+
+signedSkillLevel :: Int -> T.Text
+signedSkillLevel l = T.pack ((if l > 0 then "+" else "") ++ show l)
+
+instance Y.ToJSON SkillGroup where
+    toJSON (SkillGroup level [skill]) = Y.object [signedSkillLevel level Y..= skill]
+    toJSON (SkillGroup level skills) = Y.object [signedSkillLevel level Y..= skills]
+    toEncoding (SkillGroup level [skill]) = AT.pairs (signedSkillLevel level Y..= skill)
+    toEncoding (SkillGroup level skills) = AT.pairs (signedSkillLevel level Y..= skills)
+
+instance Y.ToJSON Extra where
+    toJSON     = AT.genericToJSON encodingOptions
+    toEncoding = AT.genericToEncoding encodingOptions
+
+instance Y.ToJSON Stunt where
+    toJSON     = AT.genericToJSON encodingOptions
+    toEncoding = AT.genericToEncoding encodingOptions
+
+instance Y.ToJSON YAMLFateChar where
+    toJSON     = AT.genericToJSON encodingOptions
+    toEncoding = AT.genericToEncoding encodingOptions
+
+encodingOptions :: AT.Options
+encodingOptions = AT.defaultOptions
+        { AT.fieldLabelModifier      = fieldLabelMod
+        , AT.omitNothingFields       = True
+        }
+    where fieldLabelMod ('a':'s':'p':'e':'c':'t':s) = s
+          fieldLabelMod ('s':'k':'i':'l':'l':'g':'r':'o':'u':'p':s) = s
+          fieldLabelMod ('s':'k':'i':'l':'l':s) = s
+          fieldLabelMod ('e':'x':'t':'r':'a':s) = s
+          fieldLabelMod ('s':'t':'u':'n':'t':s) = s
+          fieldLabelMod ('y':'a':'m':'l':s) = s
+          fieldLabelMod s = s
+
+yamlCharToFateChar :: YAMLFateChar -> FateChar
+yamlCharToFateChar char =
+        let skills = concatMap skillGroupToSkills $ yamlskillgroups char
+        in  FateChar {
+              charsystem = yamlsystem char
+            , charname = yamlname char
+            , chardescription = yamldescription char
+            , charrefreshrate = yamlrefreshrate char
+            , charaspects = yamlaspects char
+            , charskills = skills
+            , charextras = yamlextras char
+            , charstunts = yamlstunts char
+        }
+    where
+        skillGroupToSkills group =
+            map (\s -> Skill { skillname = s, skilllevel = skillgrouplevel group}) $ skillgroupskills group
+
+fateCharToYamlChar :: FateChar -> YAMLFateChar
+fateCharToYamlChar char =
+        let skillgroups = skillsToSkillGroups $ charskills char
+        in  YAMLFateChar {
+              yamlsystem = charsystem char
+            , yamlname = charname char
+            , yamldescription = chardescription char
+            , yamlrefreshrate = charrefreshrate char
+            , yamlaspects = charaspects char
+            , yamlskillgroups = skillgroups
+            , yamlextras = charextras char
+            , yamlstunts = charstunts char
+        }
+    where
+        skillsToSkillGroups skills =
+            let skillsSorted = sortBy (comparing (Down . skilllevel)) skills
+                skillsGrouped = groupBy ((==) `on` skilllevel) skillsSorted
+            in  map (\s -> SkillGroup { skillgrouplevel = skilllevel $ head s, skillgroupskills = map skillname s }) skillsGrouped
+
 main :: IO ()
 main = do
     args <- getArgs
     when (length args < 1) $ putStrLn "Error: no input file given" >> exitWith (ExitFailure 1)
     let filename = head args
     content <- BS.readFile filename
-    case Y.decodeEither content :: Either String FateChar of
+    case Y.decodeEither content :: Either String YAMLFateChar of
         Left err -> putStrLn ("Error parsing the character: " ++ err) >> exitWith (ExitFailure 1)
-        Right parsedContent ->
-            print parsedContent
+        Right parsedContent -> do
+            let fateChar = yamlCharToFateChar parsedContent
+            let yamlChar = fateCharToYamlChar fateChar
+            print yamlChar
+            let content = Y.encode yamlChar
+            BS.putStrLn content
