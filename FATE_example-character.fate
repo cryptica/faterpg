@@ -1,41 +1,48 @@
-
+# Eugen Oswald Leopold von Jylich-Kleve-Berg
 
 --- # ID
 
-ID:
-	- name: Eugen Oswald Leopold von Jylich-Kleve-Berg 
-	- description: # may be left empty
+GENERAL IFORMATION:
+	- system: "Eis & Dampf"
+	- name: "Eugen Oswald Leopold von Jylich-Kleve-Berg" 
+	- description: "adeliger Lebemann" 			# may be left empty
+	- refresh rate: 3
 
 --- # ASPECTS
 ASPECTS:
 -high concept:
-	- name: Die Nummer 24 der kaiserlichen Thronfolge zieht ins Abenteuer
-	- description: Eugen war stets ein wenig gelangweilt von der Welt, die ihn umgab. Es war kein Wunder, dass er die erstbeste Gelegenheit ergriff, sich Hals über Kopf in absurde Fährnisse zu stürzen!
+	- name: "Die Nummer 24 der kaiserlichen Thronfolge zieht ins Abenteuer"
+	- description: "Eugen war stets ein wenig gelangweilt von der Welt, die ihn umgab. Es war kein Wunder, dass er die erstbeste Gelegenheit ergriff, sich Hals über Kopf in absurde Fährnisse zu stürzen!"
 
 -trouble:
-	- name: Die Rechnung geht auf mich!
-	- description: Der adlige Lebemann weiß, dass er auf diversen Banken üppige Geldanlagen hinterlegt hat doch einen wirklichen Überblick darüber hat er nicht. Er vertraut einfach darauf, dass ihm die Ressourcen nicht ausgehen – und so lange darf es gern das Teuerste sein. Freunde wie Gegenspieler sind selbstverständlich eingeladen, egal, wie viel lichtscheues Gesindel man damit anlockt – man muss schließlich zeigen, was man hat!
+	- name: "Die Rechnung geht auf mich!"
+	- description: "Der adlige Lebemann weiß, dass er auf diversen Banken üppige Geldanlagen hinterlegt hat doch einen wirklichen Überblick darüber hat er nicht. Er vertraut einfach darauf, dass ihm die Ressourcen nicht ausgehen – und so lange darf es gern das Teuerste sein. Freunde wie Gegenspieler sind selbstverständlich eingeladen, egal, wie viel lichtscheues Gesindel man damit anlockt – man muss schließlich zeigen, was man hat!"
 
 -aspect I: 
-	name: Das habe ich von meinem Hauslehrer gelernt!
+	-name: "Das habe ich von meinem Hauslehrer gelernt!"
+	-description: "Eugen hat eine universelle Bildung genossen. Er brachte seine Lehrer stets zur Verzweiflung, zog es ihn doch überall hin, nur nicht auf die Schul-
+bank. Doch letztlich ist er mit breitgefächertem Wissen aus dieser Zeit hervorgegangen."
 -aspect II: 
-	name: Eine Klinge aus Stahl, ein Herz aus Gold
+	- name: "Eine Klinge aus Stahl, ein Herz aus Gold"
+	- description: "Eine Maid in Nöten? Ein Attentat auf den ägyptischen Vize-König, das nur unter Einsatz von Leib und Leben verhindert werden kann? Ein Duell um die Ehre? Der 24. in der Thronfolge ist dabei!"
+
 -aspect III: 
-	name: Die gehören zu mir
+	- name: "Die gehören zu mir"
+	- description: "Sein Vater schenkte ihm das Luftschiff, um die Interessen seines Sohnes ein wenig zu lenken. Dass Eugen nun ein paar Luftschiffer mit Ahnung von Navigation gefunden hat, die mit ihm in die Ferne schweifen, konnte der alte Herr ja nicht ahnen, der dachte, die Sturmschwalbe würde lediglich ein nettes Sammlerstück in einem Bootshaus auf den Ländereien abgeben. Eugen hält mindestens ebenso große Stücke auf die Mannschaft wie auf das Luftschiff, und ein Mann von Welt kann auch einen raubeinigen Friesen mit einem jovialen » Der? Der gehört zu mir! « aus einer brenzligen Situation retten, und sich selbst damit in Schwierigkeiten bringen."
 
 --- # SKILLS
 SKILLS:
-- +5:		# list
-- +4:
+- 5:		# list
+- 4:
 	- Ressourcen
-- +3:
+- 3:
 	- Kommandieren
 	- Provozieren
-- +2:
+- 2:
 	- Kämpfen
 	- Charisma
 	- Kontakte
-- +1:
+- 1:
 	- Aeronautik
 	- Schießen
 	- Wille
@@ -44,16 +51,16 @@ SKILLS:
 
 --- # EXTRAS		# list of any data type
 EXTRAS:
-- {name: spazierstock, description: Waffe:1 (für den Alltag)}
-- {name: Ein Paar Duellpistolen, description: Waffe:2}
-- {name: Verziertes Rapier, description: Waffe:3 (ebenfalls für Duelle)}
-- {name: Luftschiff, description: Sturmschwalbe}
+- {name: "spazierstock, description": "Waffe:1 (für den Alltag)"}
+- {name: "Ein Paar Duellpistolen", description: "Waffe:2"}
+- {name: "Verziertes Rapier", description: "Waffe:3 (ebenfalls für Duelle)"}
+- {name: "Luftschiff", description: "Sturmschwalbe"}
 
 
 --- # STUNTS		# name, description
 STUNTS:
-- {name: Adel verplfichtet, effect: Gibt einen +2 Bonus auf Kontakte, wenn man die Hilfe eines anderen Adligen erbittet.}
-- {name: La Canne, effect: Beim Kampf mit dem Spazierstock erhält der Kombattant einen +2 Bonus.}
-- {name: Was glaubt er eigentlich, wer ich bin?, effect: Liefert einen Bonus von +2 auf Provozieren, wenn der eigene gesellschaftliche Stand höher ist als der des Gegenübers.}
+- {name: "Adel verplfichtet", effect: "Gibt einen +2 Bonus auf Kontakte, wenn man die Hilfe eines anderen Adligen erbittet."}
+- {name: "La Canne", effect: "Beim Kampf mit dem Spazierstock erhält der Kombattant einen +2 Bonus."}
+- {name: "Was glaubt er eigentlich, wer ich bin?", effect: "Liefert einen Bonus von +2 auf Provozieren, wenn der eigene gesellschaftliche Stand höher ist als der des Gegenübers."}
 
 
